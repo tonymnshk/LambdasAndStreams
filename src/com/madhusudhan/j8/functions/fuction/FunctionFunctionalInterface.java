@@ -6,15 +6,18 @@ import com.madhusudhan.j8.util.TradeUtil;
 
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class FunctionFunctionalInterface {
-    List<Trade> trades = TradeUtil.createTrades();
+    Supplier<List<Trade>> tradesSupplier = () -> TradeUtil.createTrades();
 
     Function<String, Movie> createMovieFuction = s -> new Movie(s);
 
-    Function<Integer, Trade> tradeFinder = id ->
-            trades.stream().filter(t -> t.getId() == id).findFirst().get();
+    Function<Integer, Trade> tradeFinder = id -> {
+        List<Trade> trades = tradesSupplier.get();
+        return trades.stream().filter(t -> t.getId() == id).findFirst().get();
+    };
 
     private void testFunction(String movieName) {
         Movie m = createMovieFuction.apply(movieName);
@@ -26,6 +29,7 @@ public class FunctionFunctionalInterface {
     }
 
     public static void main(String[] args) {
+
         new FunctionFunctionalInterface().testFunction("Gods Must Be Crazy");
     }
 }
