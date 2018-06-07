@@ -5,14 +5,33 @@ public class TargetType {
         String constructEmail(String name);
     }
 
-    Email email = (name) -> name + "@google.com";
+    public static void main(String[] args) {
+        //useAnonymouse();
+        //useLambda();
+        userLambda2();
 
-    public String getEmail(String name, Email email){
-        return null;
     }
 
-    public static void main(String[] args) {
-        new TargetType().getEmail("tony", name -> name + "@google.com");
+    static void useAnonymouse() {
+        Email email = new Email() {
+            @Override
+            public String constructEmail(String name) {
+                return name + "@google.com";
+            }
+        };
+        System.out.println(email.constructEmail("tony"));
+    }
 
+    static void useLambda() {
+        Email email = name -> name + "@apple.com";
+        System.out.println(email.constructEmail("tony"));
+    }
+
+    static void printEmail(String name, Email email) {
+        System.out.println(email.constructEmail(name));
+    }
+
+    static void userLambda2() {
+        printEmail("Tony", name -> name + "@seagate.com");
     }
 }
